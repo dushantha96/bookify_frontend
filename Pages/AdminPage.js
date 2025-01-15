@@ -20,7 +20,7 @@ export default function AdminPage() {
         style={styles.card}
         onPress={() => navigation.navigate("ManageRooms")}
       >
-        <Text style={styles.cardText}>Manage Rooms</Text>
+        <Text style={styles.cardText}>Manage</Text>
       </TouchableOpacity>
 
       {/* Customer Complaints Card */}
