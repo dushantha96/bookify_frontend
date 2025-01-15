@@ -29,9 +29,8 @@ export default function ComplaintsPage() {
 
   const renderComplaint = ({ item }) => {
     console.log("🚀 ~ renderComplaint ~ item:", item);
-    // Fallback to "Unknown Date" if created_at is null or undefined
     const formattedDate = item.createdAt
-      ? new Date(item.createdAt).toLocaleString() // Format as desired
+      ? new Date(item.createdAt).toLocaleString()
       : "Unknown Date";
 
     return (

@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import axios from "axios";
-import { useUserContext } from "../Context/UserContext"; // Import the UserContext
+import { useUserContext } from "../Context/UserContext";
 import { Alert } from "react-native";
 
 export default function RoomDetails({ route }) {
@@ -32,8 +32,8 @@ export default function RoomDetails({ route }) {
 
   const handleReservation = async () => {
     try {
-      setIsLoading(true); // Show a loader if necessary
-      const formattedDate = bookingDate.toISOString().split("T")[0]; // Format date as YYYY-MM-DD
+      setIsLoading(true);
+      const formattedDate = bookingDate.toISOString().split("T")[0];
 
       console.log("🚀🚀🚀 ~ RoomDetails ~ room:", room);
 
@@ -54,10 +54,10 @@ export default function RoomDetails({ route }) {
 
       if (response.status === 200) {
         Alert.alert("Success", response.data.message);
-        console.log("Reservation successful:", response.data); // Debug
+        console.log("Reservation successful:", response.data);
       } else {
         Alert.alert("Error", response.data.message || "Reservation failed.");
-        console.error("Reservation error:", response.data); // Debug
+        console.error("Reservation error:", response.data);
       }
     } catch (error) {
       console.error("Error reserving room:", error);
@@ -66,7 +66,7 @@ export default function RoomDetails({ route }) {
         error.response?.data?.message || "Reservation failed."
       );
     } finally {
-      setIsLoading(false); // Stop the loader
+      setIsLoading(false);
     }
   };
 
@@ -133,7 +133,7 @@ export default function RoomDetails({ route }) {
               mode="date"
               display="default"
               onChange={handleDateChange}
-              minimumDate={new Date()} // Prevent past dates
+              minimumDate={new Date()}
             />
           )}
         </View>

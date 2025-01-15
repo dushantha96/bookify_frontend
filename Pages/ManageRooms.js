@@ -34,11 +34,11 @@ export default function ManageRooms() {
       const response = await fetch(
         `http://172.20.10.2:3000/api/rooms/${roomId}/status`,
         {
-          method: "PATCH", // Partial update
+          method: "PATCH",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ isBooked }), // Send isBooked as a boolean
+          body: JSON.stringify({ isBooked }),
         }
       );
       if (response.ok) {
@@ -61,7 +61,7 @@ export default function ManageRooms() {
   );
 
   const handleEditPress = (room) => {
-    setSelectedRoom({ ...room }); // Create a copy for editing
+    setSelectedRoom({ ...room });
     setModalVisible(true);
   };
 
@@ -126,8 +126,8 @@ export default function ManageRooms() {
                 }
                 style={styles.picker}
                 onValueChange={(value) => {
-                  const isBooked = value === "Unavailable"; // Determine the boolean value
-                  updateRoomStatus(selectedRoom.id, isBooked); // Pass only the boolean
+                  const isBooked = value === "Unavailable";
+                  updateRoomStatus(selectedRoom.id, isBooked);
                 }}
               >
                 <Picker.Item label="Available" value="Available" />

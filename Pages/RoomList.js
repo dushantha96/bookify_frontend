@@ -99,7 +99,7 @@ export default function RoomList({ navigation }) {
       setIsLoading(false);
 
       if (data.success) {
-        loginUser(data.user); // Store logged-in user data in context
+        loginUser(data.user);
         setCustomerModalVisible(false);
         clearInputs();
         Alert.alert("Success", "Login successful!");
@@ -155,7 +155,7 @@ export default function RoomList({ navigation }) {
       />
       <View style={styles.info}>
         <Text style={styles.name}>{item.name}</Text>
-        <Text style={styles.type}>Type:: {item.type}</Text>
+        <Text style={styles.type}>Type: {item.type}</Text>
         <Text
           style={[
             styles.availability,
@@ -532,8 +532,8 @@ const styles = StyleSheet.create({
   },
   welcomeTxt: {
     flexDirection: "row",
-    justifyContent: "center", // Center horizontally
-    alignItems: "center", // Center vertically
+    justifyContent: "center",
+    alignItems: "center",
     paddingHorizontal: 10,
     paddingBottom: 10,
   },

@@ -62,7 +62,7 @@ export default function ManageRooms() {
   );
 
   const handleEditPress = (room) => {
-    setSelectedRoom({ ...room }); // Create a copy for editing
+    setSelectedRoom({ ...room });
     setModalVisible(true);
   };
 
@@ -108,13 +108,13 @@ export default function ManageRooms() {
           style={styles.inputField}
           placeholder="Price"
           keyboardType="numeric"
-          value={selectedRoom.price === 0 ? "" : String(selectedRoom.price)} // Show empty input for 0 price
+          value={selectedRoom.price === 0 ? "" : String(selectedRoom.price)}
           onChangeText={(text) => {
             const parsedPrice = parseFloat(text);
             setSelectedRoom((prev) => ({
               ...prev,
               price:
-                text === "" ? 0 : isNaN(parsedPrice) ? prev.price : parsedPrice, // Handle empty string and invalid input
+                text === "" ? 0 : isNaN(parsedPrice) ? prev.price : parsedPrice,
             }));
           }}
         />

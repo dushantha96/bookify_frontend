@@ -233,7 +233,7 @@ const styles = StyleSheet.create({
   },
   modalBackdrop: {
     flex: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.5)", // Semi-transparent background
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
     justifyContent: "center",
     alignItems: "center",
   },
@@ -262,7 +262,7 @@ const styles = StyleSheet.create({
     borderColor: "#ccc",
     borderRadius: 8,
     padding: 10,
-    textAlignVertical: "top", // Ensure the text starts at the top for multiline input
+    textAlignVertical: "top",
     fontSize: 16,
     marginBottom: 15,
     backgroundColor: "#f9f9f9",
