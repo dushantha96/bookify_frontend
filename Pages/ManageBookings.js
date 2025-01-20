@@ -49,7 +49,11 @@ export default function ManageBookings() {
       "Are you sure you want to delete this booking?",
       [
         { text: "Cancel", style: "cancel" },
-        { text: "Delete", style: "destructive", onPress: () => deleteBooking(bookingId) },
+        {
+          text: "Delete",
+          style: "destructive",
+          onPress: () => deleteBooking(bookingId),
+        },
       ]
     );
   };
