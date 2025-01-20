@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -7,21 +7,25 @@ import {
   TouchableOpacity,
   StyleSheet,
   ScrollView,
+  TextInput,
+  Alert,
 } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import axios from "axios";
 import { useUserContext } from "../Context/UserContext";
-import { Alert } from "react-native";
+import { CreditCardInput } from "react-native-credit-card-input";
 
 export default function RoomDetails({ route }) {
   const { room } = route.params;
-  const { user, loginUser, logoutUser } = useUserContext();
-  console.log("🚀 ~ RoomDetails ~ user:", user);
-
-  console.log("🚀 ~ RoomDetails ~ room:", room);
+  const { user } = useUserContext();
 
   const [bookingDate, setBookingDate] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
+  const [showPaymentForm, setShowPaymentForm] = useState(false); // Add a state to show the payment form
+
+  const [creditCardNumber, setCreditCardNumber] = useState("");
+  const [expiryDate, setExpiryDate] = useState("");
+  const [csvNumber, setCsvNumber] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const handleDateChange = (event, selectedDate) => {
@@ -34,8 +38,6 @@ export default function RoomDetails({ route }) {
     try {
       setIsLoading(true);
       const formattedDate = bookingDate.toISOString().split("T")[0];
-
-      console.log("🚀🚀🚀 ~ RoomDetails ~ room:", room);
 
       const response = await axios.post(
         "http://172.20.10.2:3000/api/reserve-room",
@@ -50,14 +52,12 @@ export default function RoomDetails({ route }) {
         }
       );
 
-      console.log("response", response);
-
       if (response.status === 200) {
         Alert.alert("Success", response.data.message);
         console.log("Reservation successful:", response.data);
+        setShowPaymentForm(false); // Hide payment form on success
       } else {
         Alert.alert("Error", response.data.message || "Reservation failed.");
-        console.error("Reservation error:", response.data);
       }
     } catch (error) {
       console.error("Error reserving room:", error);
@@ -112,11 +112,9 @@ export default function RoomDetails({ route }) {
           {room.status === "Available" ? "Available" : "Not Available"}
         </Text>
         <Text style={styles.description}>{room.description}</Text>
-
-        {/* Room Price */}
         <Text style={styles.price}>Price: £{room.price}</Text>
 
-        {/*  Booking Date Picker */}
+        {/* Booking Date Picker */}
         <View style={styles.datePickerWrapper}>
           <Text style={styles.label}>Select Booking Date:</Text>
           <TouchableOpacity
@@ -141,11 +139,53 @@ export default function RoomDetails({ route }) {
         {/* Reserve Button */}
         <TouchableOpacity
           style={styles.reserveButton}
-          onPress={handleReservation}
+          onPress={() => setShowPaymentForm(true)} // Show the payment form
         >
           <Text style={styles.reserveButtonText}>Reserve Room</Text>
         </TouchableOpacity>
       </View>
+
+      {/* Payment Form (Displayed instead of Modal) */}
+      {showPaymentForm && (
+        <View style={styles.paymentFormContainer}>
+          <Text style={styles.modalHeader}>Payment Details</Text>
+          <Text style={styles.modalDescription}>
+            Please enter your credit card details to proceed with the booking.
+          </Text>
+
+          {/* Credit Card Input */}
+          <Text style={styles.label}>Credit Card Details</Text>
+          <CreditCardInput
+            requiresName
+            labelStyle={styles.inputLabel}
+            inputStyle={styles.inputField}
+            onChange={(formData) => {
+              setCreditCardNumber(formData.values.number);
+              setExpiryDate(formData.values.expiry);
+              setCsvNumber(formData.values.cvc);
+            }}
+          />
+
+          {/* Pay Button */}
+          <TouchableOpacity
+            style={styles.payButton}
+            onPress={handleReservation}
+            disabled={isLoading}
+          >
+            <Text style={styles.payButtonText}>
+              {isLoading ? "Processing..." : "Pay"}
+            </Text>
+          </TouchableOpacity>
+
+          {/* Close Button */}
+          <TouchableOpacity
+            style={styles.modalCloseButton}
+            onPress={() => setShowPaymentForm(false)} // Hide the payment form
+          >
+            <Text style={styles.modalCloseButtonText}>Close</Text>
+          </TouchableOpacity>
+        </View>
+      )}
     </ScrollView>
   );
 }
@@ -254,5 +294,74 @@ const styles = StyleSheet.create({
   errorText: {
     fontSize: 16,
     color: "#F44336",
+  },
+  // Payment Form Styles
+  paymentFormContainer: {
+    backgroundColor: "#fff",
+    borderRadius: 12,
+    padding: 25,
+    marginTop: 20,
+    shadowColor: "#000",
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 4 },
+    elevation: 4,
+  },
+  modalHeader: {
+    fontSize: 22,
+    fontWeight: "bold",
+    color: "#333",
+    marginBottom: 20,
+    textAlign: "center",
+  },
+  modalDescription: {
+    fontSize: 16,
+    color: "#666",
+    marginBottom: 20,
+    textAlign: "center",
+    lineHeight: 22,
+  },
+  inputField: {
+    width: "100%", // Ensure the input takes up full width available in the container
+    maxWidth: 350, // Add a maxWidth to prevent overflow
+    borderWidth: 1,
+    borderColor: "#ddd",
+    borderRadius: 8,
+    padding: 12,
+    marginBottom: 15,
+    fontSize: 16,
+    backgroundColor: "#fafafa",
+  },
+  inputLabel: {
+    color: "#333",
+    fontSize: 14,
+    marginBottom: 5,
+  },
+  payButton: {
+    backgroundColor: "#1fa637",
+    paddingVertical: 15,
+    paddingHorizontal: 40,
+    borderRadius: 8,
+    alignItems: "center",
+    marginTop: 20,
+    width: "100%",
+  },
+  payButtonText: {
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  modalCloseButton: {
+    backgroundColor: "#F44336",
+    paddingVertical: 12,
+    borderRadius: 8,
+    alignItems: "center",
+    marginTop: 10,
+    width: "100%",
+  },
+  modalCloseButtonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
   },
 });

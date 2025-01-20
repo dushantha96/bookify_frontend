@@ -23,6 +23,14 @@ export default function AdminPage() {
         <Text style={styles.cardText}>Manage Rooms</Text>
       </TouchableOpacity>
 
+      {/* Manage Bookings Card */}
+      <TouchableOpacity
+        style={styles.card}
+        onPress={() => navigation.navigate("ManageBookings")}
+      >
+        <Text style={styles.cardText}>Manage Bookings</Text>
+      </TouchableOpacity>
+
       {/* Customer Complaints Card */}
       <TouchableOpacity
         style={styles.card}

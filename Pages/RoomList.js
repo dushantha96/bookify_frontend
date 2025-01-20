@@ -35,6 +35,7 @@ export default function RoomList({ navigation }) {
   const fetchRooms = async () => {
     try {
       const response = await fetch("http://172.20.10.2:3000/api/rooms");
+      console.log("🚀 ~ fetchRooms ~ response:", response)
       const data = await response.json();
       setRooms(data);
     } catch (error) {
@@ -127,6 +128,7 @@ export default function RoomList({ navigation }) {
         },
         body: JSON.stringify({ email, password }),
       });
+      console.log("🚀 ~ handleAdminLogin ~ response:", response)
 
       const data = await response.json();
       setIsLoading(false);
@@ -168,7 +170,7 @@ export default function RoomList({ navigation }) {
     </TouchableOpacity>
   );
 
-  const filteredRooms = rooms.filter((room) =>
+  const filteredRooms = rooms?.filter((room) =>
     room.name.toLowerCase().includes(filter.toLowerCase())
   );
 
