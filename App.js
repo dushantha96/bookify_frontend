@@ -9,6 +9,7 @@ import CreateRoom from "./Pages/CreateRoom";
 import MyBookings from "./Pages/MyBookings";
 import ManageComplains from "./Pages/ManageComplains";
 import ManageRooms from "./Pages/ManageRooms";
+import ManageBookings from "./Pages/ManageBookings";
 import { UserProvider } from "./Context/UserContext";
 
 const Stack = createStackNavigator();
@@ -82,6 +83,12 @@ export default function App() {
             name="ManageRooms"
             component={ManageRooms}
             options={{ title: "Manage Rooms" }}
+          />
+
+          <Stack.Screen
+            name="ManageBookings"
+            component={ManageBookings}
+            options={{ title: "Manage Bookings" }}
           />
         </Stack.Navigator>
       </NavigationContainer>
